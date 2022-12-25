@@ -22,6 +22,7 @@ router.post("/redirect", function (req, res, next) {
     })
     .catch((e) => {
       res.status(404);
+      res.send();
     });
 });
 
