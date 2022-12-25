@@ -1,13 +1,45 @@
 <html>
+  <body>
+    <div>
+      第三方登录
+      <br />
+      <button onclick="handleGithubLoginClick()">github</button>
+    </div>
+  </body>
+  <script>
+    /**
+     * 获取URL参数
+     * @param 参数名
+     */
+    function getQueryString(name) {
+      const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+      const r = window.location.search.substr(1).match(reg);
+      if (r != null) return decodeURI(r[2]);
+      return null;
+    }
+    function getLocalState() {
+      return localStorage.getItem("state");
+    }
+    const code = getQueryString("code");
+    const state = getQueryString("state");
+    if (code && state === getLocalState()) {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "http://localhost:8080/authorization/redirect");
+      xhr.setRequestHeader("Content-type", "application/json");
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            console.log(xhr.response);
+          }
+        }
+      };
+      xhr.send(JSON.stringify({ code }));
+    }
 
-<head>
-  <title>Express</title>
-  <link rel="stylesheet" href="/stylesheets/style.css">
-</head>
-
-<body>
-  <h1>Express</h1>
-  <p>Welcome to Express</p>
-</body>
-
+    const handleGithubLoginClick = () => {
+      const state = Math.floor(Math.random() * Math.pow(10, 8));
+      localStorage.setItem("state", state);
+      window.location.href = `https://github.com/login/oauth/authorize?client_id=b351931efd1203b2230e&redirect_uri=http://localhost:8080&state=${state}`;
+    };
+  </script>
 </html>
