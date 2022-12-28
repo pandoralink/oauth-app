@@ -3,15 +3,20 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "build": "browserify webapp/src/App.js > public/javascripts/login.js",
     "start": "cross-env PORT=8080 node -r dotenv/config ./bin/www"
   },
   "dependencies": {
     "axios": "^1.2.1",
+    "blueimp-md5": "^2.19.0",
     "cookie-parser": "~1.4.4",
     "cross-env": "^7.0.3",
     "debug": "~2.6.9",
     "dotenv": "^16.0.3",
     "express": "~4.16.1",
     "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "browserify": "^17.0.0"
   }
 }
